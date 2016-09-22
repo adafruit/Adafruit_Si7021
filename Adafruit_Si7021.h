@@ -55,6 +55,8 @@ class Adafruit_Si7021 {
   void readSerialNumber(void);
   float readHumidity(void);
 
+  uint32_t sernum_a, sernum_b;
+
  private:
   
   uint8_t readRegister8(uint8_t reg);
@@ -62,9 +64,6 @@ class Adafruit_Si7021 {
   void writeRegister8(uint8_t reg, uint8_t value);
 
   int8_t  _i2caddr;
-
-  uint32_t sernum_a, sernum_b;
-
 };
 
 /**************************************************************************/
