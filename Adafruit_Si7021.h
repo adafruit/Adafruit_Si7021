@@ -17,6 +17,9 @@
 */
 /**************************************************************************/
 
+#ifndef __Si7021_H__
+#define __Si7021_H__
+
 #if ARDUINO >= 100
  #include "Arduino.h"
 #else
@@ -58,7 +61,7 @@ class Adafruit_Si7021 {
   uint32_t sernum_a, sernum_b;
 
  private:
-  
+
   uint8_t readRegister8(uint8_t reg);
   uint16_t readRegister16(uint8_t reg);
   void writeRegister8(uint8_t reg, uint8_t value);
@@ -68,4 +71,4 @@ class Adafruit_Si7021 {
 
 /**************************************************************************/
 
-
+#endif // __Si7021_H__
