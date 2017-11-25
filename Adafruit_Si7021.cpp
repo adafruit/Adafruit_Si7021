@@ -97,8 +97,8 @@ void Adafruit_Si7021::reset(void) {
 
 void Adafruit_Si7021::readSerialNumber(void) {
   Wire.beginTransmission(_i2caddr);
-  Wire.write((uint8_t)SI7021_ID1_CMD>>8);
-  Wire.write((uint8_t)SI7021_ID1_CMD&0xFF);
+  Wire.write((uint8_t)(SI7021_ID1_CMD>>8));
+  Wire.write((uint8_t)(SI7021_ID1_CMD&0xFF));
   Wire.endTransmission();
 
   Wire.requestFrom(_i2caddr, 8);
@@ -115,8 +115,8 @@ void Adafruit_Si7021::readSerialNumber(void) {
   Wire.read();
 
   Wire.beginTransmission(_i2caddr);
-  Wire.write((uint8_t)SI7021_ID2_CMD>>8);
-  Wire.write((uint8_t)SI7021_ID2_CMD&0xFF);
+  Wire.write((uint8_t)(SI7021_ID2_CMD>>8));
+  Wire.write((uint8_t)(SI7021_ID2_CMD&0xFF));
   Wire.endTransmission();
 
   Wire.requestFrom(_i2caddr, 8);
