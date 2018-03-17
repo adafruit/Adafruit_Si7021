@@ -44,7 +44,11 @@ bool Adafruit_Si7021::begin(void) {
 
   readSerialNumber();
   revision = readRevision();
-  delay(80); // needed otherwise the deivce is not ready, see conversion time in datasheet
+  /*
+   * 80 ms needed otherwise the devise is not ready, see conversion time in datasheet
+   * 50 are already done in reset, 30 here.
+   */
+  delay(30);
 
   //Serial.println(sernum_a, HEX);
   //Serial.println(sernum_b, HEX);
