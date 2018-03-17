@@ -32,15 +32,19 @@
 Adafruit_Si7021::Adafruit_Si7021(void) {
   _i2caddr = SI7021_DEFAULT_ADDRESS;
   sernum_a = sernum_b = 0;
+  model = "Si7021";
 }
 
 bool Adafruit_Si7021::begin(void) {
   Wire.begin();
 
   reset();
-  if (readRegister8(SI7021_READRHT_REG_CMD) != 0x3A) return false;
+  if (readRegister8(SI7021_READRHT_REG_CMD) != 0x3A)
+      return false;
 
   readSerialNumber();
+  revision = readRevision();
+  delay(80); // needed otherwise the deivce is not ready, see conversion time in datasheet
 
   //Serial.println(sernum_a, HEX);
   //Serial.println(sernum_b, HEX);
@@ -52,7 +56,7 @@ float Adafruit_Si7021::readHumidity(void) {
   Wire.beginTransmission(_i2caddr);
   Wire.write((uint8_t)SI7021_MEASRH_NOHOLD_CMD);
   Wire.endTransmission(false);
-  delay(25);
+  delay(20);
 
   Wire.requestFrom(_i2caddr, 3);
   uint16_t hum = Wire.read();
@@ -72,7 +76,7 @@ float Adafruit_Si7021::readTemperature(void) {
   Wire.beginTransmission(_i2caddr);
   Wire.write((uint8_t)SI7021_MEASTEMP_NOHOLD_CMD);
   Wire.endTransmission(false);
-  delay(25);
+  delay(13);
 
   Wire.requestFrom(_i2caddr, 3);
   uint16_t temp = Wire.read();
@@ -93,6 +97,27 @@ void Adafruit_Si7021::reset(void) {
   Wire.write((uint8_t)SI7021_RESET_CMD);
   Wire.endTransmission();
   delay(50);
+}
+
+
+uint8_t Adafruit_Si7021::readRevision(void)
+{
+    Wire.beginTransmission(_i2caddr);
+    Wire.write((uint8_t)(SI7021_FIRMVERS_CMD>>8));
+    Wire.write((uint8_t)(SI7021_FIRMVERS_CMD&0xFF));
+    Wire.endTransmission();
+    
+    Wire.requestFrom(_i2caddr, 2);
+    int rev = Wire.read();
+    Wire.read();
+    
+    if (rev == SI7021_REV_1) {
+        rev = 1;
+    } else if (rev == SI7021_REV_2) {
+        rev = 2;
+    }
+    
+    return rev;
 }
 
 void Adafruit_Si7021::readSerialNumber(void) {
@@ -131,6 +156,24 @@ void Adafruit_Si7021::readSerialNumber(void) {
   sernum_b <<= 8;
   sernum_b |= Wire.read();
   Wire.read();
+
+    switch(sernum_b >> 24) {
+        case 0:
+        case 0xff:
+            this->model = "SI engineering samples";
+            break;
+        case 0x0D:
+            this->model = "Si7013";
+            break;
+        case 0x14:
+            this->model = "Si7020";
+            break;
+        case 0x15:
+            this->model = "Si7021";
+            break;
+        default:
+            this->model = "unknown SI sensor";
+    }    
 }
 
 /*******************************************************************/
