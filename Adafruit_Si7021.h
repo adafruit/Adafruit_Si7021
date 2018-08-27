@@ -62,13 +62,20 @@ class Adafruit_Si7021 {
   void reset(void);
   void readSerialNumber(void);
   float readHumidity(void);
-	const char *getModel(void) { return _model; };
+  const char *getModel(void);
   uint8_t getRevision(void) { return _revision; };
   uint32_t sernum_a, sernum_b;
 
+  enum sensorType {
+    SI_Engineering_Samples,
+  	SI_7013,
+	SI_7020,
+	SI_7021,
+	SI_unkown,
+  };
  private:
   void _readRevision(void);
-  const char *_model;
+  sensorType _model;
   uint8_t _revision;
   uint8_t _readRegister8(uint8_t reg);
   uint16_t _readRegister16(uint8_t reg);
