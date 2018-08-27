@@ -218,7 +218,7 @@ void Adafruit_Si7021::readSerialNumber(void) {
 }
 
 
-const char *Adafruit_Si7021::getModel(void)
+const char *Adafruit_Si7021::getModelName(void)
 {
   switch(_model) {
     case SI_Engineering_Samples:
@@ -233,6 +233,11 @@ const char *Adafruit_Si7021::getModel(void)
     default:
       return "unknown";
   }
+}
+
+Adafruit_Si7021::sensorType Adafruit_Si7021::getModel(void)
+{
+	return _model;
 }
 
 /*******************************************************************/
