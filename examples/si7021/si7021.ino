@@ -14,12 +14,20 @@ void setup() {
   
   if (!sensor.begin()) {
     Serial.println("Did not find Si7021 sensor!");
-    while (true);
+    while (true)
+      ;
   }
+  Serial.print("Found ");
+  Serial.print(sensor.getModelName());
+  Serial.print(" Rev(");
+  Serial.print(sensor.getRevision());
+  Serial.println(")");
 }
 
 void loop() {
-  Serial.print("Humidity:    "); Serial.print(sensor.readHumidity(), 2);
-  Serial.print("\tTemperature: "); Serial.println(sensor.readTemperature(), 2);
+  Serial.print("Humidity:    ");
+  Serial.print(sensor.readHumidity(), 2);
+  Serial.print("\tTemperature: ");
+  Serial.println(sensor.readTemperature(), 2);
   delay(1000);
 }
