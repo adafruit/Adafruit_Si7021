@@ -52,6 +52,13 @@
 
 /*=========================================================================*/
 
+enum si_sensorType {
+  SI_Engineering_Samples,
+  SI_7013,
+  SI_7020,
+  SI_7021,
+  SI_UNKNOWN,
+};
 
 class Adafruit_Si7021 {
  public:
@@ -66,19 +73,12 @@ class Adafruit_Si7021 {
   uint8_t getRevision(void) { return _revision; };
   uint32_t sernum_a, sernum_b;
 
-  enum sensorType {
-    SI_Engineering_Samples,
-  	SI_7013,
-	SI_7020,
-	SI_7021,
-	SI_unkown,
-  };
-  const char *getModelName(void);
-  sensorType getModel(void);
-	
+
+  si_sensorType getModel(void);
+
  private:
   void _readRevision(void);
-  sensorType _model;
+  si_sensorType _model;
   uint8_t _revision;
   uint8_t _readRegister8(uint8_t reg);
   uint16_t _readRegister16(uint8_t reg);

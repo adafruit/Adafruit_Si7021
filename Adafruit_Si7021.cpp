@@ -214,31 +214,13 @@ void Adafruit_Si7021::readSerialNumber(void) {
       _model = SI_7021;
       break;
     default:
-      _model = SI_unkown;
+      _model = SI_UNKNOWN;
     }    
 }
 
-
-const char *Adafruit_Si7021::getModelName(void)
+si_sensorType Adafruit_Si7021::getModel(void)
 {
-  switch(_model) {
-    case SI_Engineering_Samples:
-      return "SI engineering samples";
-    case SI_7013:
-      return "Si7013";
-    case SI_7020:
-      return "Si7020";
-    case SI_7021:
-      return "Si7021";
-    case SI_unkown:
-    default:
-      return "unknown";
-  }
-}
-
-Adafruit_Si7021::sensorType Adafruit_Si7021::getModel(void)
-{
-	return _model;
+  return _model;
 }
 
 /*******************************************************************/
