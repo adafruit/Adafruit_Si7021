@@ -51,7 +51,7 @@ bool Adafruit_Si7021::begin(void) {
 float Adafruit_Si7021::readHumidity(void) {
   Wire.beginTransmission(_i2caddr);
   Wire.write((uint8_t)SI7021_MEASRH_NOHOLD_CMD);
-  Wire.endTransmission(false);
+  Wire.endTransmission();
   delay(25);
 
   Wire.requestFrom(_i2caddr, 3);
@@ -71,7 +71,7 @@ float Adafruit_Si7021::readHumidity(void) {
 float Adafruit_Si7021::readTemperature(void) {
   Wire.beginTransmission(_i2caddr);
   Wire.write((uint8_t)SI7021_MEASTEMP_NOHOLD_CMD);
-  Wire.endTransmission(false);
+  Wire.endTransmission();
   delay(25);
 
   Wire.requestFrom(_i2caddr, 3);
@@ -148,7 +148,7 @@ uint8_t Adafruit_Si7021::readRegister8(uint8_t reg) {
   uint8_t value;
   Wire.beginTransmission(_i2caddr);
   Wire.write((uint8_t)reg);
-  Wire.endTransmission(false);
+  Wire.endTransmission();
 
   Wire.requestFrom(_i2caddr, 1);
   value = Wire.read();
