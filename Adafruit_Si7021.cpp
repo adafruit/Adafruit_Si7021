@@ -50,11 +50,7 @@ float Adafruit_Si7021::readHumidity(void) {
 
   Wire.write(SI7021_MEASRH_NOHOLD_CMD);
   uint8_t err = Wire.endTransmission();
-#ifdef ARDUINO_ARCH_ESP32
-  if(err != I2C_ERROR_CONTINUE) //ESP32 has to queue ReSTART operations.
-#else
   if (err != 0)
-#endif
     return NAN; //error
 
   uint32_t start = millis(); // start timeout
@@ -80,11 +76,7 @@ float Adafruit_Si7021::readTemperature(void) {
   Wire.write(SI7021_MEASTEMP_NOHOLD_CMD);
   uint8_t err = Wire.endTransmission();
 
-#ifdef ARDUINO_ARCH_ESP32
-  if (err != I2C_ERROR_CONTINUE) //ESP32 has to queue ReSTART operations.
-#else
   if(err != 0)
-#endif
     return NAN; //error
     
   uint32_t start = millis(); // start timeout
