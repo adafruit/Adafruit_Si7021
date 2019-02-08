@@ -56,9 +56,15 @@ float Adafruit_Si7021::readHumidity(void) {
   uint32_t start = millis(); // start timeout
   while(millis()-start < _TRANSACTION_TIMEOUT) {
     if (Wire.requestFrom(_i2caddr, 3) == 3) {
-      uint16_t hum = Wire.read() << 8 | Wire.read();
-      uint8_t chxsum = Wire.read();
-
+// load data into array for crc calculation
+      uint8_t buf[3];
+      buf[0] = Wire.read();
+      buf[1] = Wire.read();
+      buf[2] = Wire.read();
+      if(calcCrc(buf,2) != buf[2]){
+        return NAN;
+      }
+      uint16_t hum = buf[0] << 8 | buf[1];
       float humidity = hum;
       humidity *= 125;
       humidity /= 65536;
@@ -82,9 +88,15 @@ float Adafruit_Si7021::readTemperature(void) {
   uint32_t start = millis(); // start timeout
   while(millis()-start < _TRANSACTION_TIMEOUT) {
     if (Wire.requestFrom(_i2caddr, 3) == 3) {
-      uint16_t temp = Wire.read() << 8 | Wire.read();
-      uint8_t chxsum = Wire.read();
-
+      uint8_t buf[3];
+      buf[0] = Wire.read();
+      buf[1] = Wire.read();
+      buf[2] = Wire.read();
+      if(calcCrc(buf,2) != buf[2]){
+        return NAN;
+      }
+      
+      uint16_t temp = buf[0] << 8 | buf[1];
       float temperature = temp;
       temperature *= 175.72;
       temperature /= 65536;
@@ -150,18 +162,24 @@ void Adafruit_Si7021::readSerialNumber(void) {
   if (!gotData)
     return; // error timeout
 
-  sernum_a = Wire.read();
-  Wire.read();
-  sernum_a <<= 8;
-  sernum_a |= Wire.read();
-  Wire.read();
-  sernum_a <<= 8;
-  sernum_a |= Wire.read();
-  Wire.read();
-  sernum_a <<= 8;
-  sernum_a |= Wire.read();
-  Wire.read();
-
+  //receive data into buffer to simplify CRC calculation
+  uint8_t buf[8];
+  for(auto a=0;a<8; a++){
+      buf[a] = Wire.read();
+  }
+  sernum_a = 0;
+  for(auto a=0; a<4;a++){
+      sernum_a <<= 8;
+      sernum_a |= buf[a*2]; //skip over checksum bytes
+  }
+  // test crc
+  for(auto a= 0; a<4; a++){
+      if(calcCrc((uint8_t*)&buf[a*2],1) != buf[(a*2)+1]){
+          // how to report error?
+          return;
+      }
+  }
+  
   Wire.beginTransmission(_i2caddr);
   Wire.write((uint8_t)(SI7021_ID2_CMD >> 8));
   Wire.write((uint8_t)(SI7021_ID2_CMD & 0xFF));
@@ -170,32 +188,37 @@ void Adafruit_Si7021::readSerialNumber(void) {
   gotData = false;
   start = millis(); // start timeout
   while(millis()-start < _TRANSACTION_TIMEOUT){
-    if (Wire.requestFrom(_i2caddr, 8) == 8) {
+    if (Wire.requestFrom(_i2caddr, 6) == 6) {
       gotData = true;
       break;
     }
     delay(2);
   }
+
   if (!gotData)
     return; // error timeout
 
-  sernum_b = Wire.read();
-  Wire.read();
-  sernum_b <<= 8;
-  sernum_b |= Wire.read();
-  Wire.read();
-  sernum_b <<= 8;
-  sernum_b |= Wire.read();
-  Wire.read();
-  sernum_b <<= 8;
-  sernum_b |= Wire.read();
-  Wire.read();
-
+  for(auto a=0;a<6; a++){
+      buf[a] = Wire.read();
+  }
+  sernum_b = ((buf[0]<<8 ) | buf[1]);
+  if(calcCrc(buf,2) != buf[2]){
+      // how to report error?
+  }
+  uint16_t x= ((buf[3]<<8) | buf[4]);
+  if(calcCrc((uint8_t*)&buf[3],2) != buf[5]){
+      // how to report error?
+  }
+  sernum_b = (sernum_b<<16) | x;
+  
   switch(sernum_b >> 24) {
     case 0:
     case 0xff:
       _model = SI_Engineering_Samples;
         break;
+    case 0x01:
+      _model = SHT_25;
+      break;
     case 0x0D:
       _model = SI_7013;
       break;
@@ -208,6 +231,32 @@ void Adafruit_Si7021::readSerialNumber(void) {
     default:
       _model = SI_UNKNOWN;
     }    
+}
+
+const char MODELNAMES[]={
+    "SI engineering samples\0"
+    "Si7013\0"
+    "Si7020\0"
+    "Si7021\0"
+    "unknown\0"
+    "SHT25\0"
+    "\0"
+};
+
+char * Adafruit_Si7021::getModelText(si_sensorType model){
+int pos = 0,count=0;
+bool done=false;
+bool foundNULL=false;
+while((count<model)&& !done){
+    if(foundNULL && MODELNAMES[pos]=='\0'){
+        done=true;
+        break;
+    }
+    foundNULL = MODELNAMES[pos] == '\0';
+    if(foundNULL) count++;
+    pos++;
+}
+return (char*)&MODELNAMES[pos];
 }
 
 si_sensorType Adafruit_Si7021::getModel(void)
