@@ -58,6 +58,7 @@ enum si_sensorType {
   SI_7020,
   SI_7021,
   SI_UNKNOWN,
+  SHT_25
 };
 
 class Adafruit_Si7021 {
@@ -73,8 +74,9 @@ class Adafruit_Si7021 {
   uint8_t getRevision(void) { return _revision; };
   uint32_t sernum_a, sernum_b;
 
-
   si_sensorType getModel(void);
+  char * getModelText(si_sensorType);
+  uint8_t calcCrc (uint8_t data[], uint8_t nbrOfBytes);
 
  private:
   void _readRevision(void);
