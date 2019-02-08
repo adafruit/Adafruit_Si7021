@@ -19,19 +19,7 @@ void setup() {
   }
 
   Serial.print("Found model ");
-  switch(sensor.getModel()) {
-    case SI_Engineering_Samples:
-      Serial.print("SI engineering samples"); break;
-    case SI_7013:
-      Serial.print("Si7013"); break;
-    case SI_7020:
-      Serial.print("Si7020"); break;
-    case SI_7021:
-      Serial.print("Si7021"); break;
-    case SI_UNKNOWN:
-    default:
-      Serial.print("Unknown");
-  }
+  Serial.print(sensor.getModelText(sensor.getModel()));
   Serial.print(" Rev(");
   Serial.print(sensor.getRevision());
   Serial.print(")");
