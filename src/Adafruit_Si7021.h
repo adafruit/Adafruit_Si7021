@@ -16,6 +16,7 @@
     v1.0  - First release
     v1.1  - async Wire fixes to work with the ESP32 (thanks to stickbreaker)
             New features to get the sensor revision and model.
+    v1.1.1 - add support for SHT2x sensors and CRC8 calculations
 */
 /**************************************************************************/
 
