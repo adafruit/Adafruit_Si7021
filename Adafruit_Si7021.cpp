@@ -309,3 +309,27 @@ uint16_t Adafruit_Si7021::_readRegister16(uint8_t reg) {
   }
   return 0; // Error timeout
 }
+
+#define POLYNOMIAL 0x131      //P(x)=x^8+x^5+x^4+1 = 100110001
+ uint8_t Adafruit_Si7021::calcCrc (uint8_t data[], uint8_t nbrOfBytes)
+ {
+/*
+ ============================================================ 
+ calculates checksum for n bytes of data
+ and compares it with expected checksum
+ input:    data[]        checksum is built based on this data
+          nbrOfBytes    checksum is built for n bytes of data
+ return:   crc8 
+============================================================ 
+*/
+    uint8_t crc = 0;
+    uint8_t byteCtr; //calculates 8-Bit checksum with given polynomial
+    for (byteCtr = 0; byteCtr < nbrOfBytes; ++byteCtr) {
+        crc ^= (data[byteCtr]);
+        for (uint8_t bit = 8; bit > 0; --bit)   {
+            if (crc & 0x80) crc = (crc << 1) ^ POLYNOMIAL;
+            else crc = (crc << 1);
+        }
+    }
+    return crc;
+}
