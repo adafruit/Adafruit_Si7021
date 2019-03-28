@@ -4,7 +4,7 @@
 
 This is the library for Adafruit Si7021 humidity / temp sensor breakout.
 
-Tested and works great with the Adafruit TPA2016D2 Class D Amplifier Breakout 
+Tested and works great with the Adafruit Si7021 breakout.
 * http://www.adafruit.com/products/3251
 
 This chip uses I2C to communicate, 2 pins are required to interface.
