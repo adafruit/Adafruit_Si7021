@@ -1,23 +1,18 @@
-Adafruit Si7021
-===============
+# Adafruit Si7021 Temperature & Humidity Sensor Breakout Board  [![Build Status](https://travis-ci.com/adafruit/Adafruit_Si70215.svg?branch=master)](https://travis-ci.com/adafruit/Adafruit_Si7021)
 
-Driver for Adafruit's Si7021 humidity / temp sensor breakout
+<a href="https://www.adafruit.com/product/3251"><img src="assets/board.jpg?raw=true" width="500px"></a>
 
-Designed specifically to work with the Si7021 breakout in the adafruit shop
+This is the library for Adafruit Si7021 humidity / temp sensor breakout.
 
-   * https://www.adafruit.com/products/3251
+Tested and works great with the Adafruit TPA2016D2 Class D Amplifier Breakout 
+* http://www.adafruit.com/products/3251
 
-This chip uses I2C to communicate, 2 pins are required to interface
+This chip uses I2C to communicate, 2 pins are required to interface.
 
-Adafruit invests time and resources providing this open source code, 
-please support Adafruit and open-source hardware by purchasing 
-products from Adafruit!
+Adafruit invests time and resources providing this open source code, please support Adafruit and open-source hardware by purchasing products from Adafruit!
 
-Check out the links above for our tutorials and wiring diagrams 
+Limor Fried/Ladyada (Adafruit Industries).
+BSD license, check license.txt for more information
+All text above must be included in any redistribution
 
-Written by Limor Fried/Ladyada for Adafruit Industries.  
-BSD license, all text above must be included in any redistribution
-
-To download. click the ZIP button on the right, rename the uncompressed folder Adafruit_Si7021. Check that the Adafruit_Si7021 folder contains Adafruit_Si7021.cpp and Adafruit_Si7021.h
-
-Place the Adafruit_Si7021 library folder your arduinosketchfolder/libraries/ folder. You may need to create the libraries subfolder if its your first library. Restart the IDE.
+To install, use the Arduino Library Manager and search for "Adafruit Si7021 Library" and install the library.
