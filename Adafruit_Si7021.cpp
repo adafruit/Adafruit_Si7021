@@ -1,38 +1,55 @@
-/**************************************************************************/
 /*!
-    @file     Adafruit_Si7021.cpp
-    @author   Limor Fried (Adafruit Industries)
-    @license  BSD (see license.txt)
+ * @file Adafruit_Si7021.cpp
+ *
+ *  @mainpage Adafruit Si7021 breakout board
+ *
+ *  @section intro_sec Introduction
+ *
+ *  This is a library for the Si7021 Temperature & Humidity Sensor.
+ *
+ *  Designed specifically to work with the Adafruit Si7021 Breakout Board.
+ *
+ *  Pick one up today in the adafruit shop!
+ *  ------> https://www.adafruit.com/product/3251
+ *
+ *  These sensors use I2C to communicate, 2 pins are required to interface.
+ *
+ *  Adafruit invests time and resources providing this open source code,
+ *  please support Adafruit andopen-source hardware by purchasing products
+ *  from Adafruit!
+ *
+ *  @section author Author
+ *
+ *  Limor Fried (Adafruit Industries)
+ *
+ *  @section license License
+ *
+ *  BSD license, all text above must be included in any redistribution
+ */
 
-    This is a library for the Adafruit Si7021 breakout board
-    ----> https://www.adafruit.com/products/3251
-
-    Adafruit invests time and resources providing this open source code,
-    please support Adafruit and open-source hardware by purchasing
-    products from Adafruit!
-*/
-/**************************************************************************/
-
-#if ARDUINO >= 100
- #include "Arduino.h"
-#else
- #include "WProgram.h"
-#endif
-
+#include "Arduino.h"
 #include <Wire.h>
 #include <Adafruit_Si7021.h>
 
-
-/**************************************************************************/
-
-Adafruit_Si7021::Adafruit_Si7021(void) {
+/*!
+ *  @brief  Instantiates a new Adafruit_Si7021 class
+ *  @param  *theWire
+ *          optional wire object
+ */
+Adafruit_Si7021::Adafruit_Si7021(TwoWire *theWire) {
   _i2caddr = SI7021_DEFAULT_ADDRESS;
+  _wire = theWire;
   sernum_a = sernum_b = 0;
   _model = SI_7021;
   _revision = 0;
 }
 
-bool Adafruit_Si7021::begin(void) {
+
+/*!
+ *  @brief  Sets up the HW by reseting It, reading serial number and reading revision.
+ *  @return Returns true if set up is successful.
+ */
+bool Adafruit_Si7021::begin() {
   Wire.begin();
 
   reset();
@@ -45,7 +62,11 @@ bool Adafruit_Si7021::begin(void) {
   return true;
 }
 
-float Adafruit_Si7021::readHumidity(void) {
+/*!
+ *  @brief  Reads the humidity value from Si7021 (No Master hold)
+ *  @return Returns humidity as float value or NAN when there is error timeout
+ */
+float Adafruit_Si7021::readHumidity() {
   Wire.beginTransmission(_i2caddr);
 
   Wire.write(SI7021_MEASRH_NOHOLD_CMD);
@@ -71,7 +92,11 @@ float Adafruit_Si7021::readHumidity(void) {
   return NAN; // Error timeout
 }
 
-float Adafruit_Si7021::readTemperature(void) {
+/*!
+ *  @brief  Reads the temperature value from Si7021 (No Master hold)
+ *  @return Returns temperature as float value or NAN when there is error timeout
+ */
+float Adafruit_Si7021::readTemperature() {
   Wire.beginTransmission(_i2caddr);
   Wire.write(SI7021_MEASTEMP_NOHOLD_CMD);
   uint8_t err = Wire.endTransmission();
@@ -97,13 +122,16 @@ float Adafruit_Si7021::readTemperature(void) {
   return NAN; // Error timeout
 }
 
-void Adafruit_Si7021::reset(void) {
+
+/*!
+ *  @brief  Sends the reset command to Si7021.
+ */
+void Adafruit_Si7021::reset() {
   Wire.beginTransmission(_i2caddr);
   Wire.write(SI7021_RESET_CMD);
   Wire.endTransmission();
   delay(50);
 }
-
 
 void Adafruit_Si7021::_readRevision(void)
 {
@@ -132,7 +160,10 @@ void Adafruit_Si7021::_readRevision(void)
     return; // Error timeout
 }
 
-void Adafruit_Si7021::readSerialNumber(void) {
+/*!
+ *  @brief  Reads serial number and stores It in sernum_a and sernum_b variable
+ */
+void Adafruit_Si7021::readSerialNumber() {
   Wire.beginTransmission(_i2caddr);
   Wire.write((uint8_t)(SI7021_ID1_CMD >> 8));
   Wire.write((uint8_t)(SI7021_ID1_CMD & 0xFF));
@@ -210,7 +241,11 @@ void Adafruit_Si7021::readSerialNumber(void) {
     }    
 }
 
-si_sensorType Adafruit_Si7021::getModel(void)
+/*!
+ *  @brief  Returns sensor model established during init 
+ *  @return model value
+ */
+si_sensorType Adafruit_Si7021::getModel()
 {
   return _model;
 }
