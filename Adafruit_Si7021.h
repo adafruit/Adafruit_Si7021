@@ -73,7 +73,6 @@ class Adafruit_Si7021 {
   *  @brief  Returns sensor revision established during init 
   *  @return model value
   */
-
   uint8_t getRevision() { return _revision; }; 
   si_sensorType getModel();
 
