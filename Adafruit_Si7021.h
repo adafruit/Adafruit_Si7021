@@ -23,6 +23,7 @@
 #define __Si7021_H__
 
 #include "Arduino.h"
+#include <Wire.h>
 
 /*!
  *  I2C ADDRESS/BITS
@@ -89,8 +90,8 @@ class Adafruit_Si7021 {
   void _writeRegister8(uint8_t reg, uint8_t value);
 
   int8_t  _i2caddr;
+  TwoWire *_wire;
   const static int _TRANSACTION_TIMEOUT = 100; // Wire NAK/Busy timeout in ms
-
 };
 
 #endif // __Si7021_H__

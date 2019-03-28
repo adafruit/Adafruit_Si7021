@@ -50,7 +50,7 @@ Adafruit_Si7021::Adafruit_Si7021(TwoWire *theWire) {
  *  @return Returns true if set up is successful.
  */
 bool Adafruit_Si7021::begin() {
-  Wire.begin();
+  _wire->begin();
 
   reset();
   if (_readRegister8(SI7021_READRHT_REG_CMD) != 0x3A)
@@ -67,18 +67,18 @@ bool Adafruit_Si7021::begin() {
  *  @return Returns humidity as float value or NAN when there is error timeout
  */
 float Adafruit_Si7021::readHumidity() {
-  Wire.beginTransmission(_i2caddr);
+  _wire->beginTransmission(_i2caddr);
 
-  Wire.write(SI7021_MEASRH_NOHOLD_CMD);
-  uint8_t err = Wire.endTransmission();
+  _wire->write(SI7021_MEASRH_NOHOLD_CMD);
+  uint8_t err = _wire->endTransmission();
   if (err != 0)
     return NAN; //error
 
   uint32_t start = millis(); // start timeout
   while(millis()-start < _TRANSACTION_TIMEOUT) {
-    if (Wire.requestFrom(_i2caddr, 3) == 3) {
-      uint16_t hum = Wire.read() << 8 | Wire.read();
-      uint8_t chxsum = Wire.read();
+    if (_wire->requestFrom(_i2caddr, 3) == 3) {
+      uint16_t hum = _wire->read() << 8 | _wire->read();
+      uint8_t chxsum = _wire->read();
 
       float humidity = hum;
       humidity *= 125;
@@ -97,18 +97,18 @@ float Adafruit_Si7021::readHumidity() {
  *  @return Returns temperature as float value or NAN when there is error timeout
  */
 float Adafruit_Si7021::readTemperature() {
-  Wire.beginTransmission(_i2caddr);
-  Wire.write(SI7021_MEASTEMP_NOHOLD_CMD);
-  uint8_t err = Wire.endTransmission();
+  _wire->beginTransmission(_i2caddr);
+  _wire->write(SI7021_MEASTEMP_NOHOLD_CMD);
+  uint8_t err = _wire->endTransmission();
 
   if(err != 0)
     return NAN; //error
     
   uint32_t start = millis(); // start timeout
   while(millis()-start < _TRANSACTION_TIMEOUT) {
-    if (Wire.requestFrom(_i2caddr, 3) == 3) {
-      uint16_t temp = Wire.read() << 8 | Wire.read();
-      uint8_t chxsum = Wire.read();
+    if (_wire->requestFrom(_i2caddr, 3) == 3) {
+      uint16_t temp = _wire->read() << 8 | _wire->read();
+      uint8_t chxsum = _wire->read();
 
       float temperature = temp;
       temperature *= 175.72;
@@ -127,24 +127,24 @@ float Adafruit_Si7021::readTemperature() {
  *  @brief  Sends the reset command to Si7021.
  */
 void Adafruit_Si7021::reset() {
-  Wire.beginTransmission(_i2caddr);
-  Wire.write(SI7021_RESET_CMD);
-  Wire.endTransmission();
+  _wire->beginTransmission(_i2caddr);
+  _wire->write(SI7021_RESET_CMD);
+  _wire->endTransmission();
   delay(50);
 }
 
 void Adafruit_Si7021::_readRevision(void)
 {
-    Wire.beginTransmission(_i2caddr);
-    Wire.write((uint8_t)(SI7021_FIRMVERS_CMD >> 8));
-    Wire.write((uint8_t)(SI7021_FIRMVERS_CMD & 0xFF));
-    Wire.endTransmission();
+    _wire->beginTransmission(_i2caddr);
+    _wire->write((uint8_t)(SI7021_FIRMVERS_CMD >> 8));
+    _wire->write((uint8_t)(SI7021_FIRMVERS_CMD & 0xFF));
+    _wire->endTransmission();
     
     uint32_t start = millis(); // start timeout
     while(millis()-start < _TRANSACTION_TIMEOUT) {
-      if (Wire.requestFrom(_i2caddr, 2) == 2) {
-        uint8_t rev = Wire.read();
-        Wire.read();
+      if (_wire->requestFrom(_i2caddr, 2) == 2) {
+        uint8_t rev = _wire->read();
+        _wire->read();
     
         if (rev == SI7021_REV_1) {
           rev = 1;
@@ -164,15 +164,15 @@ void Adafruit_Si7021::_readRevision(void)
  *  @brief  Reads serial number and stores It in sernum_a and sernum_b variable
  */
 void Adafruit_Si7021::readSerialNumber() {
-  Wire.beginTransmission(_i2caddr);
-  Wire.write((uint8_t)(SI7021_ID1_CMD >> 8));
-  Wire.write((uint8_t)(SI7021_ID1_CMD & 0xFF));
-  Wire.endTransmission();
+  _wire->beginTransmission(_i2caddr);
+  _wire->write((uint8_t)(SI7021_ID1_CMD >> 8));
+  _wire->write((uint8_t)(SI7021_ID1_CMD & 0xFF));
+  _wire->endTransmission();
 
   bool gotData = false;
   uint32_t start = millis(); // start timeout
   while(millis()-start < _TRANSACTION_TIMEOUT) {
-    if (Wire.requestFrom(_i2caddr, 8) == 8) {
+    if (_wire->requestFrom(_i2caddr, 8) == 8) {
       gotData = true;
       break;
     }
@@ -181,27 +181,27 @@ void Adafruit_Si7021::readSerialNumber() {
   if (!gotData)
     return; // error timeout
 
-  sernum_a = Wire.read();
-  Wire.read();
+  sernum_a = _wire->read();
+  _wire->read();
   sernum_a <<= 8;
-  sernum_a |= Wire.read();
-  Wire.read();
+  sernum_a |= _wire->read();
+  _wire->read();
   sernum_a <<= 8;
-  sernum_a |= Wire.read();
-  Wire.read();
+  sernum_a |= _wire->read();
+  _wire->read();
   sernum_a <<= 8;
-  sernum_a |= Wire.read();
-  Wire.read();
+  sernum_a |= _wire->read();
+  _wire->read();
 
-  Wire.beginTransmission(_i2caddr);
-  Wire.write((uint8_t)(SI7021_ID2_CMD >> 8));
-  Wire.write((uint8_t)(SI7021_ID2_CMD & 0xFF));
-  Wire.endTransmission();
+  _wire->beginTransmission(_i2caddr);
+  _wire->write((uint8_t)(SI7021_ID2_CMD >> 8));
+  _wire->write((uint8_t)(SI7021_ID2_CMD & 0xFF));
+  _wire->endTransmission();
 
   gotData = false;
   start = millis(); // start timeout
   while(millis()-start < _TRANSACTION_TIMEOUT){
-    if (Wire.requestFrom(_i2caddr, 8) == 8) {
+    if (_wire->requestFrom(_i2caddr, 8) == 8) {
       gotData = true;
       break;
     }
@@ -210,17 +210,17 @@ void Adafruit_Si7021::readSerialNumber() {
   if (!gotData)
     return; // error timeout
 
-  sernum_b = Wire.read();
-  Wire.read();
+  sernum_b = _wire->read();
+  _wire->read();
   sernum_b <<= 8;
-  sernum_b |= Wire.read();
-  Wire.read();
+  sernum_b |= _wire->read();
+  _wire->read();
   sernum_b <<= 8;
-  sernum_b |= Wire.read();
-  Wire.read();
+  sernum_b |= _wire->read();
+  _wire->read();
   sernum_b <<= 8;
-  sernum_b |= Wire.read();
-  Wire.read();
+  sernum_b |= _wire->read();
+  _wire->read();
 
   switch(sernum_b >> 24) {
     case 0:
@@ -253,24 +253,24 @@ si_sensorType Adafruit_Si7021::getModel()
 /*******************************************************************/
 
 void Adafruit_Si7021::_writeRegister8(uint8_t reg, uint8_t value) {
-  Wire.beginTransmission(_i2caddr);
-  Wire.write(reg);
-  Wire.write(value);
-  Wire.endTransmission();
+  _wire->beginTransmission(_i2caddr);
+  _wire->write(reg);
+  _wire->write(value);
+  _wire->endTransmission();
 
   //Serial.print("Wrote $"); Serial.print(reg, HEX); Serial.print(": 0x"); Serial.println(value, HEX);
 }
 
 uint8_t Adafruit_Si7021::_readRegister8(uint8_t reg) {
   uint8_t value;
-  Wire.beginTransmission(_i2caddr);
-  Wire.write((uint8_t)reg);
-  Wire.endTransmission();
+  _wire->beginTransmission(_i2caddr);
+  _wire->write((uint8_t)reg);
+  _wire->endTransmission();
 
   uint32_t start = millis(); // start timeout
   while(millis()-start < _TRANSACTION_TIMEOUT) {
-    if (Wire.requestFrom(_i2caddr, 1) == 1) {
-      value = Wire.read();
+    if (_wire->requestFrom(_i2caddr, 1) == 1) {
+      value = _wire->read();
       return value;
     }
     delay(2);
@@ -281,14 +281,14 @@ uint8_t Adafruit_Si7021::_readRegister8(uint8_t reg) {
 
 uint16_t Adafruit_Si7021::_readRegister16(uint8_t reg) {
   uint16_t value;
-  Wire.beginTransmission(_i2caddr);
-  Wire.write(reg);
-  Wire.endTransmission(false);
+  _wire->beginTransmission(_i2caddr);
+  _wire->write(reg);
+  _wire->endTransmission(false);
 
   uint32_t start = millis(); // start timeout
   while(millis()-start < _TRANSACTION_TIMEOUT) {
-    if (Wire.requestFrom(_i2caddr, 2) == 2) {
-      value = Wire.read() << 8 | Wire.read();
+    if (_wire->requestFrom(_i2caddr, 2) == 2) {
+      value = _wire->read() << 8 | _wire->read();
       return value;
     }
     delay(2);
