@@ -1,4 +1,4 @@
-# Adafruit Unified BNO055 Driver (AHRS/Orientation)  [![Build Status](https://travis-ci.com/adafruit/Adafruit_Si70215.svg?branch=master)](https://travis-ci.com/adafruit/Adafruit_Si7021)
+# Adafruit Si7021 Temperature & Humidity Sensor Breakout Board  [![Build Status](https://travis-ci.com/adafruit/Adafruit_Si70215.svg?branch=master)](https://travis-ci.com/adafruit/Adafruit_Si7021)
 
 <a href="https://www.adafruit.com/product/3251"><img src="assets/board.jpg?raw=true" width="500px"></a>
 
