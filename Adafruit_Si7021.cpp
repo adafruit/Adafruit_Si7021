@@ -85,7 +85,7 @@ float Adafruit_Si7021::readHumidity() {
       humidity /= 65536;
       humidity -= 6;
 
-      return humidity;
+      return humidity > 100.0 ? 100.0 : humidity;
     }
     delay(6); // 1/2 typical sample processing time
   }
