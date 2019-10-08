@@ -51,6 +51,10 @@ Adafruit_Si7021::Adafruit_Si7021(TwoWire *theWire) {
  */
 bool Adafruit_Si7021::begin() {
   _wire->begin();
+  
+  _wire->beginTransmission(_i2caddr);
+  if (_wire->endTransmission())
+    return false;   // device not available at the expected address
 
   reset();
   if (_readRegister8(SI7021_READRHT_REG_CMD) != 0x3A)
@@ -71,8 +75,11 @@ float Adafruit_Si7021::readHumidity() {
 
   _wire->write(SI7021_MEASRH_NOHOLD_CMD);
   uint8_t err = _wire->endTransmission();
+
   if (err != 0)
     return NAN; //error
+
+  delay(20);    // account for conversion time for reading humidity
 
   uint32_t start = millis(); // start timeout
   while(millis()-start < _TRANSACTION_TIMEOUT) {
@@ -101,9 +108,11 @@ float Adafruit_Si7021::readTemperature() {
   _wire->write(SI7021_MEASTEMP_NOHOLD_CMD);
   uint8_t err = _wire->endTransmission();
 
-  if(err != 0)
+  if (err != 0)
     return NAN; //error
-    
+
+  delay(20);    // account for conversion time for reading temperature
+
   uint32_t start = millis(); // start timeout
   while(millis()-start < _TRANSACTION_TIMEOUT) {
     if (_wire->requestFrom(_i2caddr, 3) == 3) {
