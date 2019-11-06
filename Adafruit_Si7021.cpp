@@ -79,9 +79,7 @@ float Adafruit_Si7021::readHumidity() {
   if (err != 0)
     return NAN; //error
 
-#if defined(TEENSY40)
-  delay(20);
-#endif
+  delay(20);    // account for conversion time for reading humidity
 
   uint32_t start = millis(); // start timeout
   while(millis()-start < _TRANSACTION_TIMEOUT) {
@@ -113,9 +111,7 @@ float Adafruit_Si7021::readTemperature() {
   if (err != 0)
     return NAN; //error
 
-#if defined(TEENSY40)
-  delay(20);
-#endif
+  delay(20);    // account for conversion time for reading temperature
 
   uint32_t start = millis(); // start timeout
   while(millis()-start < _TRANSACTION_TIMEOUT) {
