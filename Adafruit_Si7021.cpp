@@ -263,8 +263,7 @@ void Adafruit_Si7021::heater(bool h) {
 
   if (h) {
     regValue |= (1 << (SI7021_REG_HTRE_BIT));
-  }
-  else {
+  } else {
     regValue &= ~(1 << (SI7021_REG_HTRE_BIT));
   }
   _writeRegister8(SI7021_WRITERHT_REG_CMD, regValue);
