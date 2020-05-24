@@ -79,7 +79,7 @@ public:
   /*!
    *  @brief  Enable/Disable the sensor heater
    *  @param h True to enable the heater, False to disable it.
-   */  
+   */
   void heater(bool h);
   bool isHeaterEnabled();
 
