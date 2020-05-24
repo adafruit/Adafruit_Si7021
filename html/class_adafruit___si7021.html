@@ -94,6 +94,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a06e3de90adda6d6a32a969f4b47848b7"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___si7021.html#a06e3de90adda6d6a32a969f4b47848b7">readHumidity</a> ()</td></tr>
 <tr class="memdesc:a06e3de90adda6d6a32a969f4b47848b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads the humidity value from Si7021 (No Master hold)  <a href="#a06e3de90adda6d6a32a969f4b47848b7">More...</a><br /></td></tr>
 <tr class="separator:a06e3de90adda6d6a32a969f4b47848b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac626f151681cc62e2d3a4555f343875a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___si7021.html#ac626f151681cc62e2d3a4555f343875a">heater</a> (bool h)</td></tr>
+<tr class="memdesc:ac626f151681cc62e2d3a4555f343875a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable/Disable the sensor heater.  <a href="#ac626f151681cc62e2d3a4555f343875a">More...</a><br /></td></tr>
+<tr class="separator:ac626f151681cc62e2d3a4555f343875a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8417cddbfbec7107278648aa311ac17a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___si7021.html#a8417cddbfbec7107278648aa311ac17a">isHeaterEnabled</a> ()</td></tr>
+<tr class="memdesc:a8417cddbfbec7107278648aa311ac17a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return sensor heater state.  <a href="#a8417cddbfbec7107278648aa311ac17a">More...</a><br /></td></tr>
+<tr class="separator:a8417cddbfbec7107278648aa311ac17a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f049c1f547379d51036a446a7858b92"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___si7021.html#a8f049c1f547379d51036a446a7858b92">getRevision</a> ()</td></tr>
 <tr class="memdesc:a8f049c1f547379d51036a446a7858b92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns sensor revision established during init.  <a href="#a8f049c1f547379d51036a446a7858b92">More...</a><br /></td></tr>
 <tr class="separator:a8f049c1f547379d51036a446a7858b92"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -195,6 +201,53 @@ Public Attributes</h2></td></tr>
 
 <p>Reads the humidity value from Si7021 (No Master hold) </p>
 <dl class="section return"><dt>Returns</dt><dd>Returns humidity as float value or NAN when there is error timeout </dd></dl>
+
+</div>
+</div>
+<a id="ac626f151681cc62e2d3a4555f343875a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac626f151681cc62e2d3a4555f343875a">&#9670;&nbsp;</a></span>heater()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Adafruit_Si7021::heater </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>h</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enable/Disable the sensor heater. </p>
+<p>Enable/Disable sensor heater.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">h</td><td>True to enable the heater, False to disable it. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8417cddbfbec7107278648aa311ac17a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8417cddbfbec7107278648aa311ac17a">&#9670;&nbsp;</a></span>isHeaterEnabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Adafruit_Si7021::isHeaterEnabled </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Return sensor heater state. </p>
+<dl class="section return"><dt>Returns</dt><dd>heater state (TRUE = enabled, FALSE = disabled) </dd></dl>
 
 </div>
 </div>
