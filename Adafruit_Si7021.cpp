@@ -36,7 +36,8 @@
  *  @param  *theWire
  *          optional wire object
  */
-Adafruit_Si7021::Adafruit_Si7021(TwoWire *theWire) {
+Adafruit_Si7021::Adafruit_Si7021(TwoWire *theWire) 
+{
   _i2caddr = SI7021_DEFAULT_ADDRESS;
   _wire = theWire;
   sernum_a = sernum_b = 0;
@@ -49,7 +50,8 @@ Adafruit_Si7021::Adafruit_Si7021(TwoWire *theWire) {
  * revision.
  *  @return Returns true if set up is successful.
  */
-bool Adafruit_Si7021::begin() {
+bool Adafruit_Si7021::begin() 
+{
   _wire->begin();
 
   _wire->beginTransmission(_i2caddr);
@@ -92,7 +94,7 @@ float Adafruit_Si7021::readHumidity() {
       humidity /= 65536;
       humidity -= 6;
 
-      return humidity > 100.0 ? 100.0 : humidity;
+      return humidity > 100.0 ? 100.0 : humidity < 0 ? 0 : humidity;
     }
     delay(6); // 1/2 typical sample processing time
   }
@@ -103,8 +105,11 @@ float Adafruit_Si7021::readHumidity() {
  *  @brief  Reads the temperature value from Si7021 (No Master hold)
  *  @return Returns temperature as float value or NAN when there is error
  * timeout
+ * 
+ * @param convertToF: by default is false. If true it will return temp
+ * in F instead of C
  */
-float Adafruit_Si7021::readTemperature() {
+float Adafruit_Si7021::readTemperature(bool convertToF = false) {
   _wire->beginTransmission(_i2caddr);
   _wire->write(SI7021_MEASTEMP_NOHOLD_CMD);
   uint8_t err = _wire->endTransmission();
@@ -115,6 +120,7 @@ float Adafruit_Si7021::readTemperature() {
   delay(20); // account for conversion time for reading temperature
 
   uint32_t start = millis(); // start timeout
+
   while (millis() - start < _TRANSACTION_TIMEOUT) {
     if (_wire->requestFrom(_i2caddr, 3) == 3) {
       uint16_t temp = _wire->read() << 8 | _wire->read();
@@ -124,12 +130,25 @@ float Adafruit_Si7021::readTemperature() {
       temperature *= 175.72;
       temperature /= 65536;
       temperature -= 46.85;
-      return temperature;
+      
+      if (convertToTempF(temperature)
+      {
+          return convertToTempF(temperature);
+      }
+      else
+      {
+          return temperature;
+      }
     }
     delay(6); // 1/2 typical sample processing time
   }
 
   return NAN; // Error timeout
+}
+
+float Adafruit_Si7021::convertToTempF(float celsius)
+{
+    return (celsius * 9 / 5) + 32;
 }
 
 /*!

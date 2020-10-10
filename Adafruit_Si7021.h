@@ -71,7 +71,7 @@ public:
   Adafruit_Si7021(TwoWire *theWire = &Wire);
   bool begin();
 
-  float readTemperature();
+  float readTemperature(bool convertToF = false);
   void reset();
   void readSerialNumber();
   float readHumidity();
@@ -94,6 +94,8 @@ public:
   uint32_t sernum_b; /**< Serialnum B */
 
 private:
+  float convertToTempF(float celsius); //not part of original library
+
   void _readRevision();
   si_sensorType _model;
   uint8_t _revision;
