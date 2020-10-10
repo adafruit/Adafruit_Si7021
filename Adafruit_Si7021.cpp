@@ -50,8 +50,7 @@ Adafruit_Si7021::Adafruit_Si7021(TwoWire *theWire)
  * revision.
  *  @return Returns true if set up is successful.
  */
-bool Adafruit_Si7021::begin() 
-{
+bool Adafruit_Si7021::begin() {
   _wire->begin();
 
   _wire->beginTransmission(_i2caddr);
@@ -146,8 +145,7 @@ float Adafruit_Si7021::readTemperature(bool convertToF = false) {
   return NAN; // Error timeout
 }
 
-float Adafruit_Si7021::convertToTempF(float celsius)
-{
+float Adafruit_Si7021::convertToTempF(float celsius){
     return (celsius * 9 / 5) + 32;
 }
 
