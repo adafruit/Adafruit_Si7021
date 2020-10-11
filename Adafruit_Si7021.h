@@ -25,9 +25,9 @@
 #include "Arduino.h"
 #include <Wire.h>
 
-/*!
- *  I2C ADDRESS/BITS
- */
+ /*!
+  *  I2C ADDRESS/BITS
+  */
 #define SI7021_DEFAULT_ADDRESS 0x40
 
 #define SI7021_MEASRH_HOLD_CMD                                                 \
@@ -53,13 +53,13 @@
 #define SI7021_REV_1 0xff /**< Sensor revision 1 */
 #define SI7021_REV_2 0x20 /**< Sensor revision 2 */
 
-/** An enum to represent sensor types **/
+  /** An enum to represent sensor types **/
 enum si_sensorType {
-  SI_Engineering_Samples,
-  SI_7013,
-  SI_7020,
-  SI_7021,
-  SI_UNKNOWN,
+	SI_Engineering_Samples,
+	SI_7013,
+	SI_7020,
+	SI_7021,
+	SI_UNKNOWN,
 };
 
 /*!
@@ -68,44 +68,43 @@ enum si_sensorType {
  */
 class Adafruit_Si7021 {
 public:
-  Adafruit_Si7021(TwoWire *theWire = &Wire);
-  bool begin();
+	Adafruit_Si7021(TwoWire* theWire = &Wire);
+	bool begin();
 
-  float readTemperature(bool convertToF = false);
-  void reset();
-  void readSerialNumber();
-  float readHumidity();
+	float readTemperature(bool convertToF);
+	void reset();
+	void readSerialNumber();
+	float readHumidity();
 
-  /*!
-   *  @brief  Enable/Disable the sensor heater
-   *  @param h True to enable the heater, False to disable it.
-   */
-  void heater(bool h);
-  bool isHeaterEnabled();
+	/*!
+	 *  @brief  Enable/Disable the sensor heater
+	 *  @param h True to enable the heater, False to disable it.
+	 */
+	void heater(bool h);
+	bool isHeaterEnabled();
 
-  /*!
-   *  @brief  Returns sensor revision established during init
-   *  @return model value
-   */
-  uint8_t getRevision() { return _revision; };
-  si_sensorType getModel();
+	/*!
+	 *  @brief  Returns sensor revision established during init
+	 *  @return model value
+	 */
+	uint8_t getRevision() { return _revision; };
+	si_sensorType getModel();
 
-  uint32_t sernum_a; /**< Serialnum A */
-  uint32_t sernum_b; /**< Serialnum B */
+	uint32_t sernum_a; /**< Serialnum A */
+	uint32_t sernum_b; /**< Serialnum B */
 
 private:
-  float convertToTempF(float celsius); //not part of original library
+	void _readRevision();
+	float convertCToF(float celsius);
+	si_sensorType _model;
+	uint8_t _revision;
+	uint8_t _readRegister8(uint8_t reg);
+	uint16_t _readRegister16(uint8_t reg);
+	void _writeRegister8(uint8_t reg, uint8_t value);
 
-  void _readRevision();
-  si_sensorType _model;
-  uint8_t _revision;
-  uint8_t _readRegister8(uint8_t reg);
-  uint16_t _readRegister16(uint8_t reg);
-  void _writeRegister8(uint8_t reg, uint8_t value);
-
-  int8_t _i2caddr;
-  TwoWire *_wire;
-  const static int _TRANSACTION_TIMEOUT = 100; // Wire NAK/Busy timeout in ms
+	int8_t _i2caddr;
+	TwoWire* _wire;
+	const static int _TRANSACTION_TIMEOUT = 100; // Wire NAK/Busy timeout in ms
 };
 
 #endif // __Si7021_H__
