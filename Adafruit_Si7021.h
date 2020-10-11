@@ -71,7 +71,7 @@ public:
 	Adafruit_Si7021(TwoWire* theWire = &Wire);
 	bool begin();
 
-	float readTemperature(bool convertToF = false);
+	float readTemperature(bool convertToF);
 	void reset();
 	void readSerialNumber();
 	float readHumidity();
