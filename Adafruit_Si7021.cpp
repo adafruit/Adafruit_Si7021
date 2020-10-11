@@ -193,6 +193,10 @@ void Adafruit_Si7021::readSerialNumber() {
         }
         delay(2);
     }
+    if (!gotData)
+    {
+        return;
+    }
 
 
     sernum_a = _wire->read();
@@ -221,7 +225,11 @@ void Adafruit_Si7021::readSerialNumber() {
         }
         delay(2);
     }
-
+  
+    if(!gotData)
+    {
+        return;
+    }
 
     sernum_b = _wire->read();
     _wire->read();
