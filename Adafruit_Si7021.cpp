@@ -30,6 +30,7 @@
 #include "Arduino.h"
 #include <Adafruit_Si7021.h>
 #include <Wire.h>
+#include <cmath>
 
  /*!
   *  @brief  Instantiates a new Adafruit_Si7021 class
@@ -64,6 +65,7 @@ bool Adafruit_Si7021::begin() {
     _readRevision();
 
     return true;
+    
 }
 
 /*!
@@ -96,7 +98,7 @@ float Adafruit_Si7021::readHumidity() {
         }
         delay(6); // 1/2 typical sample processing time
     }
-    return NAN; // Error timeout
+    return NAN ; // Error timeout
 }
 
 /*!
