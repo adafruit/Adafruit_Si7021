@@ -30,7 +30,7 @@
 #include "Arduino.h"
 #include <Adafruit_Si7021.h>
 #include <Wire.h>
-#include <cmath>
+#include <numeric>
 
  /*!
   *  @brief  Instantiates a new Adafruit_Si7021 class
