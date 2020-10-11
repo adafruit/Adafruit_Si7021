@@ -104,7 +104,7 @@ float Adafruit_Si7021::readHumidity() {
  *  @return Returns temperature as float value or NAN when there is error
  * timeout
  */
-float Adafruit_Si7021::readTemperature(bool convertToF = false) {
+float Adafruit_Si7021::readTemperature(bool convertToF) {
     _wire->beginTransmission(_i2caddr);
     _wire->write(SI7021_MEASTEMP_NOHOLD_CMD);
     uint8_t err = _wire->endTransmission();
@@ -328,4 +328,5 @@ uint16_t Adafruit_Si7021::_readRegister16(uint8_t reg) {
         }
         delay(2);
     }
-    return 0; // Error timeout
+    return 0;
+}// Error timeout
