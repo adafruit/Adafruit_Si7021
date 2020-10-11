@@ -192,7 +192,7 @@ void Adafruit_Si7021::readSerialNumber() {
         delay(2);
     }
     if (!gotData)
-        throw "serial read error";
+        break;
     sernum_a = _wire->read();
     _wire->read();
     sernum_a <<= 8;
@@ -220,7 +220,7 @@ void Adafruit_Si7021::readSerialNumber() {
         delay(2);
     }
     if (!gotData)
-        throw "serial read error"; // error timeout
+        break; // error timeout
 
     sernum_b = _wire->read();
     _wire->read();
