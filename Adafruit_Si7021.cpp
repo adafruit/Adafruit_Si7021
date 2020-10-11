@@ -187,12 +187,12 @@ void Adafruit_Si7021::readSerialNumber() {
     while (millis() - start < _TRANSACTION_TIMEOUT) {
         if (_wire->requestFrom(_i2caddr, 8) == 8) {
             gotData = true;
-            return;
+            break;
         }
         delay(2);
     }
     if (!gotData)
-        return;
+        return; // error timeout
 
     sernum_a = _wire->read();
     _wire->read();
