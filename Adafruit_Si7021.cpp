@@ -30,7 +30,6 @@
 #include "Arduino.h"
 #include <Adafruit_Si7021.h>
 #include <Wire.h>
-#include <numeric>
 
  /*!
   *  @brief  Instantiates a new Adafruit_Si7021 class
@@ -194,10 +193,7 @@ void Adafruit_Si7021::readSerialNumber() {
         delay(2);
     }
     if (!gotData)
-    {
-        return;
-    }
-
+        return; // error timeout
 
     sernum_a = _wire->read();
     _wire->read();
@@ -225,11 +221,8 @@ void Adafruit_Si7021::readSerialNumber() {
         }
         delay(2);
     }
-  
-    if(!gotData)
-    {
-        return;
-    }
+    if (!gotData)
+        return; // error timeout
 
     sernum_b = _wire->read();
     _wire->read();
