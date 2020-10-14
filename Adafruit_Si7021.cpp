@@ -92,7 +92,7 @@ float Adafruit_Si7021::readHumidity() {
       humidity /= 65536;
       humidity -= 6;
 
-      return humidity > 100.0 ? 100.0 : humidity;
+      return humidity > 100.0 ? 100.0 : humidity < 0 ? 0 : humidity;
     }
     delay(6); // 1/2 typical sample processing time
   }
@@ -104,7 +104,7 @@ float Adafruit_Si7021::readHumidity() {
  *  @return Returns temperature as float value or NAN when there is error
  * timeout
  */
-float Adafruit_Si7021::readTemperature() {
+float Adafruit_Si7021::readTemperature(bool convertToF) {
   _wire->beginTransmission(_i2caddr);
   _wire->write(SI7021_MEASTEMP_NOHOLD_CMD);
   uint8_t err = _wire->endTransmission();
@@ -124,7 +124,8 @@ float Adafruit_Si7021::readTemperature() {
       temperature *= 175.72;
       temperature /= 65536;
       temperature -= 46.85;
-      return temperature;
+
+      return convertToF == false ? temperature : convertCToF(temperature);
     }
     delay(6); // 1/2 typical sample processing time
   }
@@ -160,12 +161,14 @@ void Adafruit_Si7021::_readRevision(void) {
         rev = 2;
       }
       _revision = rev;
-      return;
     }
     delay(2);
   }
   _revision = 0;
-  return; // Error timeout
+}
+
+float Adafruit_Si7021::convertCToF(float celsius) {
+  return (celsius * 9 / 5) + 32;
 }
 
 /*!
@@ -322,5 +325,5 @@ uint16_t Adafruit_Si7021::_readRegister16(uint8_t reg) {
     }
     delay(2);
   }
-  return 0; // Error timeout
-}
+  return 0;
+} // Error timeout
