@@ -2,6 +2,7 @@ var searchData=
 [
   ['sernum_5fa',['sernum_a',['../class_adafruit___si7021.html#a259230f631753f7de247f36a3c54fa65',1,'Adafruit_Si7021']]],
   ['sernum_5fb',['sernum_b',['../class_adafruit___si7021.html#a51beed3b76a0ac6a0e9124483eb7175f',1,'Adafruit_Si7021']]],
+  ['setheatlevel',['setHeatLevel',['../class_adafruit___si7021.html#a57a3a2fd3cbafa69b5666decdba7357a',1,'Adafruit_Si7021']]],
   ['si7021_5fdefault_5faddress',['SI7021_DEFAULT_ADDRESS',['../_adafruit___si7021_8h.html#a850631bfa89139eb9d4796fd7fdd6eed',1,'Adafruit_Si7021.h']]],
   ['si7021_5ffirmvers_5fcmd',['SI7021_FIRMVERS_CMD',['../_adafruit___si7021_8h.html#a2e429d79e5cca3c05d883b5509a88963',1,'Adafruit_Si7021.h']]],
   ['si7021_5fid1_5fcmd',['SI7021_ID1_CMD',['../_adafruit___si7021_8h.html#a4b71181e51a490ca8626758a80a0d14c',1,'Adafruit_Si7021.h']]],
@@ -19,5 +20,6 @@ var searchData=
   ['si7021_5frev_5f2',['SI7021_REV_2',['../_adafruit___si7021_8h.html#aaf8c9fca2161188937be2e9842fdbdb0',1,'Adafruit_Si7021.h']]],
   ['si7021_5fwriteheater_5freg_5fcmd',['SI7021_WRITEHEATER_REG_CMD',['../_adafruit___si7021_8h.html#af62a1fb7fe727aa31f52de3ce616e3a4',1,'Adafruit_Si7021.h']]],
   ['si7021_5fwriterht_5freg_5fcmd',['SI7021_WRITERHT_REG_CMD',['../_adafruit___si7021_8h.html#aec66f83a736566c680c195cad9f7cb7c',1,'Adafruit_Si7021.h']]],
+  ['si_5fheatlevel',['si_heatLevel',['../_adafruit___si7021_8h.html#a4c725877cdbab2df5ca7cef1d0b7eca1',1,'Adafruit_Si7021.h']]],
   ['si_5fsensortype',['si_sensorType',['../_adafruit___si7021_8h.html#a93fd3e04a4649b9941b40d799c3fd1a3',1,'Adafruit_Si7021.h']]]
 ];
