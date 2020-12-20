@@ -62,6 +62,7 @@ enum si_sensorType {
   SI_UNKNOWN,
 };
 
+/** An enum to represent the sensor heater heat levels **/
 enum si_heatLevel {
   SI_HEATLEVEL_LOWEST = 0x00,
   SI_HEATLEVEL_LOW = 0x01,
@@ -91,6 +92,11 @@ public:
    */
   void heater(bool h);
   bool isHeaterEnabled();
+
+  /*!
+   *  @brief  Set the sensor heater heat level
+   *  @param level is a si_heatLevel that represents the heat level
+   */
   void setHeatLevel(uint8_t level);
 
   /*!
